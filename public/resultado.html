@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resultado - Maré Encantada</title>
+  <style>
+    :root{
+      --bg:#e8f7ff;
+      --card:#ffffff;
+      --accent:#0077b6;
+      --muted:#617d98;
+      --glass: rgba(255,255,255,0.6);
+      --dark-bg:#052235;
+      --dark-card:#0b2335;
+      --transition: 300ms ease;
+    }
+    body.dark{
+      --bg: #071426;
+      --card: #071f2b;
+      --accent: #2bd1ff;
+      --muted: #9fb7c6;
+      --glass: rgba(255,255,255,0.04);
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg) 0%, #f4fbff 60%);
+      color:#04293a;
+      line-height:1.45;
+      transition: background var(--transition), color var(--transition);
+      text-align:center;
+      padding:40px 20px;
+    }
+    h1,h2,p{margin:0 0 16px;}
+    h1{font-size:1.8rem;}
+    h2{font-size:1.4rem;}
+    p{color:var(--muted);font-size:1.05rem;}
+    .card{
+      display:inline-block;
+      background:var(--card);
+      padding:20px;
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(2,40,60,0.08);
+      transition:transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 36px rgba(2,40,60,0.12);}
+    .card img{
+      max-width:350px;
+      border-radius:12px;
+      display:block;
+      margin:0 auto 20px;
+      transition:transform var(--transition);
+    }
+    .card img:hover{transform:scale(1.03);}
+    button{
+      padding:12px 22px;
+      background:var(--accent);
+      border:none;
+      border-radius:10px;
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      font-size:1rem;
+      box-shadow:0 8px 18px rgba(2,40,60,0.12);
+      transition:background var(--transition), transform var(--transition);
+    }
+    button:hover{background:#0093ba;transform:translateY(-2px);}
+    footer{
+      margin-top:2rem;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <h1>🌊 Emoção detectada:</h1>
+  <h2 id="emocaoTitle">Processando...</h2>
+  <p id="confTitle"></p>
+
+  <div class="card fade-in">
+    <img id="imagemEmocao" alt="Imagem relacionada à emoção" />
+    <button onclick="voltar()">Voltar</button>
+  </div>
+
+  <footer>
+    <p>Maré Encantada © <span id="ano"></span> | Projeto Fundo do Mar</p>
+  </footer>
+
+  <script>
+    const imagensPorEmocao = {
+      feliz: [
+      'static/mar_feliz/1.png', 
+      'static/mar_feliz/2.png',
+      'static/mar_feliz/3.png',
+      'static/mar_feliz/4.png',
+      'static/mar_feliz/5.png',
+      'static/mar_feliz/6.png',
+      'static/mar_feliz/7.png',
+      'static/mar_feliz/8.png',
+      'static/mar_feliz/9.png',
+      'static/mar_feliz/10.png',
+      'static/mar_feliz/11.png', 
+      'static/mar_feliz/12.png',
+      'static/mar_feliz/13.png',
+      'static/mar_feliz/14.png',
+      'static/mar_feliz/15.png',
+      'static/mar_feliz/16.png',
+      'static/mar_feliz/17.png',
+      'static/mar_feliz/18.png',
+      'static/mar_feliz/19.png',
+      'static/mar_feliz/20.png'
+    ],
+
+      triste: [
+
+      'static/mar_triste/1.png', 
+      'static/mar_triste/2.png',
+      'static/mar_triste/3.png',
+      'static/mar_triste/4.png',
+      'static/mar_triste/5.png',
+      'static/mar_triste/6.png',
+      'static/mar_triste/7.png',
+      'static/mar_triste/8.png',
+      'static/mar_triste/9.png',
+      'static/mar_triste/10.png',
+      'static/mar_triste/11.png', 
+      'static/mar_triste/12.png',
+      'static/mar_triste/13.png',
+      'static/mar_triste/14.png',
+      'static/mar_triste/15.png',
+      'static/mar_triste/16.png',
+      'static/mar_triste/17.png',
+      'static/mar_triste/18.png',
+      'static/mar_triste/19.png',
+      'static/mar_triste/20.png',
+      'static/mar_triste/21.png',
+    ],
+
+      neutro: [
+
+      'static/mar_neutro/1.png', 
+      'static/mar_neutro/2.png',
+      'static/mar_neutro/3.png',
+      'static/mar_neutro/4.png',
+      'static/mar_neutro/5.png',
+      'static/mar_neutro/6.png',
+      'static/mar_neutro/7.png',
+      'static/mar_neutro/8.png',
+      'static/mar_neutro/9.png',
+      'static/mar_neutro/10.png',
+      'static/mar_neutro/11.png', 
+      'static/mar_neutro/12.png',
+      'static/mar_neutro/13.png',
+      'static/mar_neutro/14.png',
+      'static/mar_neutro/15.png',
+      'static/mar_neutro/16.png',
+      'static/mar_neutro/17.png',
+      'static/mar_neutro/18.png',
+      'static/mar_neutro/19.png',
+      'static/mar_neutro/20.png',
+    ]
+    };
+
+    const traducoes = {
+      happy: 'feliz',
+      sad: 'triste',
+      neutral: 'neutro',
+      angry: 'triste',
+      fearful: 'triste',
+      disgusted: 'triste',
+      surprised: 'feliz'
+    };
+
+    function getQueryParam(name){
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    function imagemAleatoria(lista){
+      return lista[Math.floor(Math.random() * lista.length)];
+    }
+
+    const emocaoOriginal = getQueryParam('emocao') || 'neutral';
+    const conf = getQueryParam('conf') || '0';
+    const emocaoTraduzida = traducoes[emocaoOriginal] || 'nenhuma';
+
+    document.getElementById('emocaoTitle').innerText = emocaoTraduzida.charAt(0).toUpperCase() + emocaoTraduzida.slice(1);
+    document.getElementById('confTitle').innerText = `Confiança: ${conf}%`;
+
+    if (imagensPorEmocao[emocaoTraduzida] && imagensPorEmocao[emocaoTraduzida].length > 0) {
+      document.getElementById('imagemEmocao').src = imagemAleatoria(imagensPorEmocao[emocaoTraduzida]);
+    } else {
+      document.getElementById('imagemEmocao').style.display = 'none';
+    }
+
+    function voltar(){
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('ano').innerText = new Date().getFullYear();
+  </script>
+</body>
+</html>
